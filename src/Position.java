@@ -1,0 +1,42 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author MarcSanchez
+ */
+public class Position {
+    double x;
+    double y;
+    
+     protected Position(double xin, double yin){
+        x=xin;
+        y=yin;
+    }
+     
+    /**
+     * Retorna la distància euclidiana entre p i this
+     * @param p posició amb la que es vol realitzar la distància euclidiana.
+     */
+    protected double getEuclidian(Position p){
+        return Math.sqrt(Math.pow(y - p.y,2) + Math.pow(x - p.x, 2));
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        if(o == null) return this == null;
+        else if(!(o instanceof Position)) return false;
+        else {
+            Position p = (Position)o;
+            return p.x == x && p.y == y;
+        }
+    } 
+    
+    @Override
+    public String toString(){
+        return "[x,y] -> " + "[" + x + "," + y + "]";
+    }
+}
