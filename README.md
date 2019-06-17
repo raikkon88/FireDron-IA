@@ -125,3 +125,36 @@ Es deshabilita el pas de missatges. S'utilitza la mateixa estratègia per defini
 ## Guinyo a en Jordi Regincós.
 
 S'ha definit un patró strategy per realitzar el canvi de comportament entre cooperatiu i competitiu, s'ha afegit un botó a sota de tot de la botonera que permet en temps d'execució canviar el comportament. Per defecte sempre comencen en cooperatiu, un click canvia a !cooperatiu és a dir a competitiu i si es torna a clicar canvien a cooperatiu, i així successivament.
+
+# MAS Auction algorithm
+
+## Definim el tipus de subhasta
+
+- Subhasta amb sobre tencat : Els drons entre ells no saben què aposten els demés.  
+- Single-round : A cada dron se li assigna un foc en funció del DronHeurístic. 
+- És aposta inversa : El què es vol és minimitzar distàncies i maximitzar la càrrega d'aigua (s'utilitza una estratègia per invertir la maximització de la càrrega.)
+- La subhasta és uni-item : Tot i que es podria assignar un paquet de focs a un dron, s'hauria d'aplicar combinatòria per poder assignar-los. Per simplificar es farà uni-item. 
+- Estratègia : Els drons sempre diuen la veritat. (Si hi ha temps es planteja assignar un valor random de falcetat per aconseguir l'assignació del foc, tindria sentit en multi-item)
+
+## Heurístic d'assignació (Ordre dels arbres per subhastar)
+
+Aquest heurístic s'aplica a l'ordre en que es subhasten els arbres, es té en compte el perill de propagació fent que els focs que tenen més arbres al voltant siguin els primers en apagar-se. 
+
+## Heurístic de subhasta 
+
+Cada dron ha de tenir en compte la distància euclidiana i la càrrega d'aigua que li queda. Es pretènc minimitzar la distància i maximitzar la càrrega d'aigua. aquesta segona té a veure en què queda més a prop del dipòsit i en quants focs hi ha al voltant del foc que es proposa apagar. 
+
+## Algoritme proposat 
+
+A cada iteració el subhastador recull al informació de tots els focs que té per subhastar. Mentre quedin drons sense target es va llençant a subhasta els focs que té amb l'ordre que dessigna l'heurístic d'assignació. 
+
+Quan tots els drons tenen focs assignats fa que avancin. 
+
+## Casuística i simplicitats
+
+Si un dron no pot apagar el foc degut a que no té aigua no s'afegeix com a bidder fins que no torna a estar carregat. 
+
+Un dron no pot contestar que prefereix anar al dipòsit si encara li queda aigua, per simplicitat. Es podria fer el càlcul per veure si el dipòsit li ve de camí a apagar el foc peró la "puja" hauria de ser un seguit de posicions.  
+
+
+
