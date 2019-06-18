@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /*
@@ -47,7 +48,7 @@ public class Cooperatiu implements Algorithm{
                 // NO queden focs on no hi vagi ningú
                 if(!dron.viatges.isEmpty()){
                     // si ja està tot pillat ves a cardar-li la feina a un altre si en queda
-                    target = dron.viatges.poll();
+                    target = dron.viatges.first();
                 }
                 else{
                     // No em moc de lloc. Ja no queden focs per apagar. 
@@ -77,7 +78,7 @@ public class Cooperatiu implements Algorithm{
             dron.notify(target);
         }
         dron.observers = new ArrayList<>();
-        dron.viatges = new LinkedBlockingQueue<Voyage>();
+        dron.viatges = new TreeSet<>();
         return finalPosition;
     }
     

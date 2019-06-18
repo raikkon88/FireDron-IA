@@ -36,7 +36,7 @@ public class Escenari {
         Arbres = new ArrayList<Arbre>();
         Focs = new ArrayList<Foc>();
         Diposit = new Refill(0,0);
-        competitiu = false;
+        competitiu = true;
         // Activem el mecanisme de subhasta.
         auctioner = new Auctioner(this);
     }
@@ -71,9 +71,12 @@ public class Escenari {
             }
         }
     }
-    
+
+
     public void changeMode(){
         competitiu = !competitiu;
+        if(competitiu) auctioner = new Auctioner(this);
+        else auctioner = null;
     }
     
     public Algorithm getAlgorithm(){
@@ -109,22 +112,19 @@ public class Escenari {
 
         // Si s'implementa el tipus subhasta (estipulat per defecte a aquesta segona entrega)
         if(auctioner != null){
-            auctioner.startAuction(Robots);
-            for(Robot r : Robots){
-                // TODO : S'ha de moure el robot.
-            }
+            auctioner.startAuction();
         }
-        else{
-            // Si no s'implementa el mecanisme de subhasta :
-            //Passar l'step a cada 1 dels robots
-            for( int i =0; i!=  Robots.size(); i++){
-                Robots.get(i).moure();
-             /*if(Robots.get(i).ple != 0){
-                 //ni ha un de ple
-                 plens = true;
-             }*/
-            }
+
+        //Passar l'step a cada 1 dels robots
+        for( Robot r : Robots){
+            r.moure();
         }
+
+        // Un cop el robot s'ha mogut buidem les estructures de dades que li pertoquen per què pugui tornar a inicialitzar a la següent volta.
+        for( Robot r : Robots){
+            r.init();
+        }
+
         
         for( int i =Focs.size()-1; i!= -1; i--){
                 

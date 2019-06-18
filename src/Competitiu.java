@@ -1,6 +1,9 @@
 
+import sun.reflect.generics.tree.Tree;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,9 +17,45 @@ import java.util.List;
  */
 public class Competitiu implements Algorithm {
 
+    /**
+     * De tots els viatges que se li han assignat, és a dir totes les ofertes que ha guanyat a la subhasta
+     * Ell mateix decideix quin és el foc que ha de començar apagant.
+     * @param dron Ent que ha de decidir quin és el foc que apagarà.
+     * @return La posició que **el mateix dron ha decidit apagar**.
+     */
     @Override
     public Position moure(Robot dron) {
-        Position finalPosition = null;
+
+        // TODO : El cas en què xoquen no està resolt.
+
+        List<Position> contrincants = new ArrayList<>(dron.escena.Robots);
+        contrincants.remove(dron);
+
+        while(dron.viatges.size() > 0 && dron.viatges.first().getTarget().ocupada(contrincants))
+            dron.viatges.remove(dron.viatges.first());
+
+        if(dron.viatges.size() == 0){
+            if(dron.escena.Focs.size() > 0){
+                // Si li queden focs per apagar peró no ha guanyat cap subhasta que vagi al que tingui més a prop i que no estigui ocupat
+                TreeSet<Voyage> fires = new TreeSet<>();
+                for(Foc f : dron.escena.Focs){
+                    Voyage v = new Voyage(dron, f);
+                    if(!v.getTarget().ocupada(contrincants)){
+                        fires.add(v);
+                    }
+                }
+                if(fires.size() > 0)
+                    return fires.first().getTarget();
+                else
+                    return dron.escena.Diposit;
+            }
+            else
+                return dron.escena.Diposit;
+        }
+        else
+            return dron.viatges.first().getTarget();
+
+        /*Position finalPosition = null;
         if(dron.ple == 0){
             //si no aigua anem al diposit a carregar   
             finalPosition = new Position(dron.escena.Diposit.x, dron.escena.Diposit.y);
@@ -49,7 +88,7 @@ public class Competitiu implements Algorithm {
             }
         }
         
-        return finalPosition;
+        return finalPosition;*/
     }
     
 }

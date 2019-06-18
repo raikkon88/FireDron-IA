@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
  *
  * @author Llorenç
  */
-public class Foc extends Position{
+public class Foc extends Position {
     int estat;
     
     public Foc(double xin, double yin){
@@ -27,6 +27,4 @@ public class Foc extends Position{
       String dir = System.getProperty("user.dir")+ "/Imatges/fire"+Integer.toString(estat)+".png";
       return new ImageIcon( dir);
     }
-    
-    
 }

@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 
+import javafx.geometry.Pos;
+
+import java.util.List;
+
 /**
  *
  * @author MarcSanchez
@@ -33,8 +37,22 @@ public class Position {
             Position p = (Position)o;
             return p.x == x && p.y == y;
         }
-    } 
-    
+    }
+
+    /**
+     * Verifica si la posició està o no ocupada per algun element del llistat elements.
+     * @param elements Llistat d'elements que poden ocupar una posició.
+     * @return cert si un element a elements està a la posició this
+     */
+    public boolean ocupada(List<Position> elements){
+        for(Position p : elements){
+            if(p.x == x && p.y == y){
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString(){
         return "[x,y] -> " + "[" + x + "," + y + "]";

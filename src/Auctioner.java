@@ -19,22 +19,24 @@ public class Auctioner {
 
     public void startAuction(){
 
-        List<Robot> robotsPerAssignar = new ArrayList<>(escenari.Robots);
-        List<Foc> focsAssignats = new ArrayList<>();
-        HashMap<Robot, TreeSet<Voyage>> subhasta = new HashMap<>();
-        // Mentre no estiguin tots assignats.
-        while(robotsPerAssignar.size() > 0){
-            // Subhastem tots els focs a tots els robots.
-            for (Foc f : escenari.Focs) {
-                for (Robot r : escenari.Robots) {
-
-                }
+        // Subhastem tots els focs a tots els robots.
+        for (Foc f : escenari.Focs) {
+            Voyage winner = null;
+            for (Robot r : escenari.Robots) {
+                Voyage tmpVoyage = new Voyage(r, f);
+                // Recullo la millor oferta, si la oferta és la mateixa no s'ha millorat i per tant no es canvia.
+                if(winner == null || winner.compareTo(tmpVoyage) < 0)
+                    winner = tmpVoyage;
             }
-            // Mirem els guanyadors
-
-
-            // TODO : Si queden drons i no queden focs els diem als drons que quedin que vagin a apagar els focs que quedin.
-
+            // Afegeixo el viatge al robot guanyador.
+            winner.getRobot().update(winner);
         }
+        // Tots els robots tenen els viatges cap als focs assignats. Per tant el què faran serà ordenar-los tots per l'heurístic i miraran d'apagar el màxim de focs possibles començant per els més propers.
+
+
+
+        // TODO : Si queden drons i no queden focs els diem als drons que quedin que vagin a apagar els focs que quedin.
+
+
     }
 }

@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.ImageIcon;
 
@@ -12,7 +9,7 @@ abstract class Robot extends Position implements VoyageSubject, VoyageObserver{
     
     private double energia;
     private double punts;
-    protected Queue<Voyage> viatges;
+    protected TreeSet<Voyage> viatges;
     protected List<VoyageObserver> observers;
     protected Algorithm algorithm;
     
@@ -30,11 +27,16 @@ abstract class Robot extends Position implements VoyageSubject, VoyageObserver{
         this.escena = esc;
         this.energia = 0;
         this.punts = 0;
-        viatges = new LinkedBlockingQueue<Voyage>();
-        observers = new ArrayList<VoyageObserver>();
+        viatges = new TreeSet<>();
+        observers = new ArrayList<>();
         algorithm = escena.getAlgorithm();
     }
-    
+
+    public void init(){
+        observers = new ArrayList<>();
+        viatges = new TreeSet<>();
+    }
+
     public void setPos(double xin,double yin){
         //Fa que el robot es mogui, la posicio no pot estar ocupada perres exepuant la paperera
         //Els robots no poden avançar més de una posicio

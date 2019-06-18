@@ -102,6 +102,10 @@ public class Voyage implements Comparable<Voyage>{
     public double getYStep(){
         return nextY;
     }
+
+    public Position getTarget(){
+        return target;
+    }
     
     /** 
      * En funció d'una serie de posicions conflictives intentem desviar el dron.
