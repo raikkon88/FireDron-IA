@@ -25,14 +25,14 @@ public class UI extends javax.swing.JFrame {
                 initable();
                 pinta();
 
-                if(end){
-                 DefaultTableModel Tmodel= new DefaultTableModel(4,escena.Robots.size()+1);
-                 jTable2.setModel(Tmodel);
-                 for(int i = 0; i!=escena.Robots.size(); i++){
-                     jTable2.setValueAt(i,0,i+1);
-                     jTable2.setValueAt(escena.Robots.get(i).getEnergia(),1,i+1);
-                     jTable2.setValueAt(escena.Robots.get(i).getPunts(),2,i+1);
-                 }
+                    if(end){
+                     DefaultTableModel Tmodel= new DefaultTableModel(4,escena.Robots.size()+1);
+                     jTable2.setModel(Tmodel);
+                     for(int i = 0; i!=escena.Robots.size(); i++){
+                         jTable2.setValueAt(i,0,i+1);
+                         jTable2.setValueAt(escena.Robots.get(i).getEnergia(),1,i+1);
+                         jTable2.setValueAt(escena.Robots.get(i).getPunts(),2,i+1);
+                     }
                  
                  
                      jTable2.setValueAt("Robot num",0,0);
@@ -41,8 +41,8 @@ public class UI extends javax.swing.JFrame {
 
                      jTable2.setValueAt(escena.numArbrescremats,3,1);
                      jTable2.setValueAt("Arbres Cremats",3,0);
-                     
-                    
+
+
                      timer.stop();
                 }
             }

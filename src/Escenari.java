@@ -19,6 +19,7 @@ import java.util.Random;
  */
 public class Escenari {
     private boolean competitiu;
+    private Auctioner auctioner;
     java.util.List<Robot> Robots;
     java.util.List<Arbre> Arbres;
     int numArbrescremats;
@@ -36,6 +37,8 @@ public class Escenari {
         Focs = new ArrayList<Foc>();
         Diposit = new Refill(0,0);
         competitiu = false;
+        // Activem el mecanisme de subhasta.
+        auctioner = new Auctioner(this);
     }
     
     public void Crea(File fitxer) throws FileNotFoundException, IOException{
@@ -103,15 +106,25 @@ public class Escenari {
     }
     
     public boolean Step(){
-        //Passar l'step a cada 1 dels robots
-        
-        for( int i =0; i!=  Robots.size(); i++){
-                Robots.get(i).moure();
-                 /*if(Robots.get(i).ple != 0){
-                     //ni ha un de ple
-                     plens = true;
-                 }*/
+
+        // Si s'implementa el tipus subhasta (estipulat per defecte a aquesta segona entrega)
+        if(auctioner != null){
+            auctioner.startAuction(Robots);
+            for(Robot r : Robots){
+                // TODO : S'ha de moure el robot.
             }
+        }
+        else{
+            // Si no s'implementa el mecanisme de subhasta :
+            //Passar l'step a cada 1 dels robots
+            for( int i =0; i!=  Robots.size(); i++){
+                Robots.get(i).moure();
+             /*if(Robots.get(i).ple != 0){
+                 //ni ha un de ple
+                 plens = true;
+             }*/
+            }
+        }
         
         for( int i =Focs.size()-1; i!= -1; i--){
                 

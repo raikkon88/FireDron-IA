@@ -21,5 +21,7 @@ class myRobot extends Robot  {
         setPos(getX()+anarX(target.x),getY()+anarY(target.y));
         apaga();
         emplena();
-    }    
+    }
+
+
 }
