@@ -5,8 +5,8 @@ import javax.swing.ImageIcon;
 /**
  * @author Llorenç
  */
-abstract class Robot extends Position implements VoyageSubject, VoyageObserver{
-    
+abstract class Robot extends Position implements VoyageSubject, VoyageObserver, Bidder{
+
     private double energia;
     private double punts;
     protected TreeSet<Voyage> viatges;
@@ -208,7 +208,6 @@ abstract class Robot extends Position implements VoyageSubject, VoyageObserver{
             return r.x == x && r.y == y;
         }
     }
-    
     
     @Override
     public void addObserver(VoyageObserver robot) {

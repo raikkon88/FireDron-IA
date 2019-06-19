@@ -29,8 +29,7 @@ public class Escenari {
     double dimy;
    
     boolean fi = false;
-    
-    
+
     public Escenari(){
         Robots = new ArrayList<Robot>();
         Arbres = new ArrayList<Arbre>();
@@ -106,6 +105,31 @@ public class Escenari {
             }
         }
         return hiEs;
+    }
+
+    /**
+     * Conta els focs en un quadrat de radi
+     * @param p És la posició que s'està revisant.
+     * @param n és el nombre de caselles al voltant que es miraran.
+     * rreturn El nombre de focs que hi ha al voltant d'una posició + 1 si la p és foc.
+     */
+    public int focsVoltant(Position p, int n){
+        double xin = p.x - n;
+        double yin = p.y - n;
+        double xf = p.x + n;
+        double yf = p.y + n;
+
+        if(xin < 0) xin = 0;
+        if(yin < 0) yin = 0;
+        if(xf > dimx) xf = dimx;
+        if(yf > dimy) xf = dimy;
+
+        int focs = 0;
+
+        for(Foc f : Focs){
+            focs += (f.x >= xin && f.x <dimx && f.y >= dimy && f.y < dimy) ? 1 : 0;
+        }
+        return focs;
     }
     
     public boolean Step(){

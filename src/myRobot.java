@@ -23,5 +23,18 @@ class myRobot extends Robot  {
         emplena();
     }
 
+    @Override
+    public Offer getOffer(Foc foc) {
+        return null;
+    }
 
+    @Override
+    public Offer getOffer(Arbre arbre) {
+        return null;
+    }
+
+    @Override
+    public Offer getOffer(Refill diposit) {
+        return null;
+    }
 }

@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-import javafx.geometry.Pos;
 
 import java.util.List;
 
