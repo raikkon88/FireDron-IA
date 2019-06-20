@@ -77,6 +77,10 @@ abstract class Robot extends Position implements VoyageSubject, VoyageObserver, 
             
         }
     }
+
+    public double getPle(){
+        return ple;
+    }
     
     public double getX(){
         return x;

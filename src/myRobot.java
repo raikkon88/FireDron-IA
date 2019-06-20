@@ -25,7 +25,7 @@ class myRobot extends Robot  {
 
     @Override
     public Offer getOffer(Foc foc) {
-        return null;
+
     }
 
     @Override
