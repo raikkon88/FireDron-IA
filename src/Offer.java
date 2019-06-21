@@ -1,13 +1,19 @@
 public class Offer extends Voyage {
 
-    private double water;
+    private Double bid;
 
-    public Offer(Robot from, Position target, double water) {
+    public Offer(Robot from, Position target, Double bid) {
         super(from, target);
-        this.water = water;
+        this.bid = bid;
     }
 
-    public double getWater(){
-        return water;
+    @Override
+    public int compareTo(Voyage o) {
+        Offer offer = (Offer)o;
+        return bid.compareTo(offer.bid);
+    }
+
+    public Double getBid(){
+        return bid;
     }
 }

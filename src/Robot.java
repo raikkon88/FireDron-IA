@@ -12,6 +12,7 @@ abstract class Robot extends Position implements VoyageSubject, VoyageObserver, 
     protected TreeSet<Voyage> viatges;
     protected List<VoyageObserver> observers;
     protected Algorithm algorithm;
+    protected double money;
     
     public Escenari escena;
     
@@ -30,6 +31,7 @@ abstract class Robot extends Position implements VoyageSubject, VoyageObserver, 
         viatges = new TreeSet<>();
         observers = new ArrayList<>();
         algorithm = escena.getAlgorithm();
+        money = 10;
     }
 
     public void init(){
@@ -77,6 +79,24 @@ abstract class Robot extends Position implements VoyageSubject, VoyageObserver, 
             
         }
     }
+
+    public double getMoney() {
+        return money;
+    }
+
+    public boolean canPay(double d){
+        return money >= d;
+    }
+
+    public void pay(double d)  {
+        money = money - d;
+
+    }
+
+    public void initMoney() {
+        this.money = 10;
+    }
+
 
     public double getPle(){
         return ple;

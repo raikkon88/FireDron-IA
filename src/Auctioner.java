@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Subhastador.
@@ -16,88 +13,29 @@ public class Auctioner {
 
     public void startAuction(){
 
-
-        // Acumulem els calers. En aquest cas de moneda utilitzem el nombre de càrregues d'aigua que tenen.
-        HashMap<Robot, Double> carregues = new HashMap<>();
-        for(Robot r : escenari.Robots){
-            carregues.put(r, r.getPle());
-        }
-
         // Subhastem tots els focs a tots els robots.
         for (Foc f : escenari.Focs) {
-            Voyage winner = null;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-            TreeSet<Voyage> offers = new TreeSet<>();
+            List<Offer> offers = new ArrayList<>();
             for (Robot r : escenari.Robots) {
-                offers.add(r.getOffer(f));
+                offers.add(r.getOffer(f, new FuzzyBidder(escenari)));
             }
-            // Afegeixo el viatge al robot guanyador.
-            winner.getRobot().update(winner);
+
+            Collections.sort(offers);
+
+            /** Tinc totes les ofertes ordenades de guanyador a perdedor. */
+            while (offers.size() > 0 && !offers.get(0).getRobot().canPay(offers.get(0).getBid())){
+                offers.remove(offers.get(0));
+            }
+
+            if(offers.size() > 0){
+                Robot dron = offers.get(0).getRobot();
+                dron.pay(offers.get(0).getBid());
+                dron.update(offers.get(0));
+            }
+
         }
 
-        for(Arbre a : escenari.Arbres){
-            Voyage winner  = null;
-            TreeSet<Voyage> offers = new TreeSet<>();
-            for(Robot r : escenari.Robots){
-                offers.add(r.getOffer(a));
-            }
-            winner.getRobot().update(winner);
-        }
-
-        TreeSet<Voyage> offers = new TreeSet<>();
-        for(Robot r : escenari.Robots){
-            offers.add(r.getOffer(escenari.Diposit));
-        }
 
     }
 }

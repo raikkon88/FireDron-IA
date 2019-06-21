@@ -122,12 +122,12 @@ public class Escenari {
         if(xin < 0) xin = 0;
         if(yin < 0) yin = 0;
         if(xf > dimx) xf = dimx;
-        if(yf > dimy) xf = dimy;
+        if(yf > dimy) yf = dimy;
 
         int focs = 0;
 
         for(Foc f : Focs){
-            focs += (f.x >= xin && f.x <dimx && f.y >= dimy && f.y < dimy) ? 1 : 0;
+            focs += (f.x >= xin && f.x <= xf && f.y >= yin && f.y <= yf) ? 1 : 0;
         }
         return focs;
     }

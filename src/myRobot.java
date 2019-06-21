@@ -24,17 +24,8 @@ class myRobot extends Robot  {
     }
 
     @Override
-    public Offer getOffer(Foc foc) {
-
+    public Offer getOffer(Foc foc, BidMethod method) {
+        return new Offer(this, foc, new FuzzyBidder(escena).getBid(this, foc));
     }
 
-    @Override
-    public Offer getOffer(Arbre arbre) {
-        return null;
-    }
-
-    @Override
-    public Offer getOffer(Refill diposit) {
-        return null;
-    }
 }

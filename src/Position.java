@@ -25,7 +25,7 @@ public class Position {
      * @param p posició amb la que es vol realitzar la distància euclidiana.
      */
     protected double getEuclidian(Position p){
-        return Math.sqrt(Math.pow(y - p.y,2) + Math.pow(x - p.x, 2));
+        return Math.sqrt(Math.pow(Math.abs(y - p.y),2) + Math.pow(Math.abs(x - p.x), 2));
     }
     
     @Override
