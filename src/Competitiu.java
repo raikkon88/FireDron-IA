@@ -28,6 +28,16 @@ public class Competitiu implements Algorithm {
 
         // TODO : El cas en què xoquen no està resolt.
 
+        if(dron.getPle() == 0){
+            return dron.escena.Diposit;
+        }
+        if(dron.viatges.size() > 0){
+            return dron.viatges.first().getTarget();
+        }
+        else{
+            return new Position(dron.x, dron.y);
+        }
+        /*
         List<Position> contrincants = new ArrayList<>(dron.escena.Robots);
         contrincants.remove(dron);
 
@@ -53,7 +63,7 @@ public class Competitiu implements Algorithm {
                 return dron.escena.Diposit;
         }
         else
-            return dron.viatges.first().getTarget();
+            return dron.viatges.first().getTarget();*/
 
         /*Position finalPosition = null;
         if(dron.ple == 0){

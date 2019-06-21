@@ -132,9 +132,10 @@ public class FuzzyBidder implements BidMethod {
 
 
     public FuzzyBidder(Escenari esc){
-
         this.escenari = esc;
+    }
 
+    public void initMatrix(){
         /**
          * S'inicialitza la matriu de regles que es dispararan
          */
@@ -160,10 +161,10 @@ public class FuzzyBidder implements BidMethod {
         regles.add(new Regla(new Dist(Dist.ARRIBABLE),new Focs(Focs.QUANTS),  new Aigua(Aigua.POCA),new Aposta(Aposta.SUAU)));
         regles.add(new Regla(new Dist(Dist.ARRIBABLE),new Focs(Focs.MOLTS),   new Aigua(Aigua.POCA),new Aposta(Aposta.RES)));
 
-        regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.CAP),    new Aigua(Aigua.POCA), new Aposta(Aposta.RES)));
-        regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.ALGUN),  new Aigua(Aigua.POCA), new Aposta(Aposta.SUAU)));
-        regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.QUANTS), new Aigua(Aigua.POCA), new Aposta(Aposta.SUAU)));
-        regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.MOLTS),  new Aigua(Aigua.POCA), new Aposta(Aposta.RES)));
+        regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.CAP),    new Aigua(Aigua.BE), new Aposta(Aposta.RES)));
+        regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.ALGUN),  new Aigua(Aigua.BE), new Aposta(Aposta.SUAU)));
+        regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.QUANTS), new Aigua(Aigua.BE), new Aposta(Aposta.SUAU)));
+        regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.MOLTS),  new Aigua(Aigua.BE), new Aposta(Aposta.RES)));
 
         regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.CAP),    new Aigua(Aigua.PLE), new Aposta(Aposta.RES)));
         regles.add(new Regla(new Dist(Dist.ARRIBABLE), new Focs(Focs.ALGUN),  new Aigua(Aigua.PLE), new Aposta(Aposta.SUAU)));
@@ -197,6 +198,8 @@ public class FuzzyBidder implements BidMethod {
      */
     @Override
     public double getBid(Robot robot, Position target) {
+
+        initMatrix();
         /**
          * Entrades del sistema difús :
          * - Distància entre robot i posició.
@@ -216,6 +219,7 @@ public class FuzzyBidder implements BidMethod {
             for (Aigua aigues : aiguaRules) {
                 for (Focs focs : focsRules) {
                     Regla r = new Regla(dist, focs, aigues);
+                    // TODO : Tinc algun problema per aquí.
                     Aposta a = regles.get(regles.indexOf(r)).getAposta();
                     r.setAposta(new Aposta(a.name, a.value));
                     if (reglesDisparades.containsKey(r.getAposta().name)) {

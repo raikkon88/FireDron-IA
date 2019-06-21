@@ -13,6 +13,10 @@ public class Auctioner {
 
     public void startAuction(){
 
+        for(Robot r : escenari.Robots){
+            r.initMoney();
+        }
+
         // Subhastem tots els focs a tots els robots.
         for (Foc f : escenari.Focs) {
 
