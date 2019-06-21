@@ -10,10 +10,15 @@ public class Offer extends Voyage {
     @Override
     public int compareTo(Voyage o) {
         Offer offer = (Offer)o;
-        return bid.compareTo(offer.bid);
+        return bid.compareTo(offer.bid) * -1;
     }
 
     public Double getBid(){
         return bid;
+    }
+
+    @Override
+    public String toString() {
+        return "BID = " + bid + " -> " +super.toString();
     }
 }

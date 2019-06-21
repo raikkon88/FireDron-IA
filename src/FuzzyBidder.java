@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FuzzyBidder implements BidMethod {
@@ -210,18 +211,105 @@ public class FuzzyBidder implements BidMethod {
         /**
          * Tinc tots els possibles valors fuzificats i els percentatges que han evaluat.
          */
-        List<Regla> reglesDisparades = new ArrayList<>();
-        for(Dist dist : distRules){
-            for(Aigua aigues : aiguaRules){
-                for(Focs focs : focsRules){
+        HashMap<String, Regla> reglesDisparades = new HashMap<>();
+        for (Dist dist : distRules) {
+            for (Aigua aigues : aiguaRules) {
+                for (Focs focs : focsRules) {
                     Regla r = new Regla(dist, focs, aigues);
-                    int index = regles.indexOf(r);
-                    r.setAposta(regles.get(index).getAposta());
-                    reglesDisparades.add(r);
+                    Aposta a = regles.get(regles.indexOf(r)).getAposta();
+                    r.setAposta(new Aposta(a.name, a.value));
+                    if (reglesDisparades.containsKey(r.getAposta().name)) {
+                        if (reglesDisparades.get(r.getAposta().name).aposta.value < r.getAposta().value) {
+                            reglesDisparades.put(r.getAposta().name, r);
+                        }
+                    } else
+                        reglesDisparades.put(r.getAposta().name, r);
+
                 }
             }
         }
 
+        List<Double> valorsVAlids = new ArrayList<>();
+        double res = reglesDisparades.containsKey(Aposta.RES) ? reglesDisparades.get(Aposta.RES).aposta.value : 0.0;
+        double suau = reglesDisparades.containsKey(Aposta.SUAU) ? reglesDisparades.get(Aposta.SUAU).aposta.value : 0.0;
+        double mig = reglesDisparades.containsKey(Aposta.MIG) ? reglesDisparades.get(Aposta.MIG).aposta.value : 0.0;
+        double fort = reglesDisparades.containsKey(Aposta.FORT) ? reglesDisparades.get(Aposta.FORT).aposta.value : 0.0;
+
+        for (int i = 0; i < 11; i++) {
+            if (i < 4) {
+                // Miro regles per res i per suau
+                if(i == 0) {
+                    valorsVAlids.add(getDefuzzi(res, suau, 1, 0));
+                } else if (i == 1) {
+                    valorsVAlids.add(getDefuzzi(res, suau, 0.7, 0.3));
+                } else if (i == 2) {
+                    valorsVAlids.add(getDefuzzi(res, suau, 0.4, 0.6));
+                } else { // i== 3
+                    valorsVAlids.add(getDefuzzi(res, suau, 0.1, 0.9));
+                }
+            } else if (i >= 4 && i < 7) {
+                // Miro regles per suau i per mig
+                if (i == 4) {
+                    valorsVAlids.add(getDefuzzi(suau, mig, 0.7, 0.3));
+                } else if (i == 5) {
+                    valorsVAlids.add(getDefuzzi(suau, mig, 0.4, 0.6));
+                } else { // i == 6
+                    valorsVAlids.add(getDefuzzi(suau, mig, 0.1, 0.9));
+                }
+            } else {
+                if (i == 7) {
+                    valorsVAlids.add(getDefuzzi(mig, fort, 0.7, 0.3));
+                } else if (i == 8) {
+                    valorsVAlids.add(getDefuzzi(mig, fort, 0.4, 0.6));
+                } else if (i == 9) {
+                    valorsVAlids.add(getDefuzzi(mig, fort, 0.1, 0.9));
+                } else { // i == 10
+                    valorsVAlids.add(getDefuzzi(mig, fort, 0, 1));
+                }
+            }
+        }
+
+
+        int i = 0;
+        double num = 0;
+        double den = 0;
+
+        for (Double d : valorsVAlids){
+            num += d*i;
+            den += d;
+            i++;
+        }
+
+        double result = den == 0 ? 0.0 : num / den;
+        if(result > robot.money)
+            return robot.money;
+        else{
+            return result;
+        }
+    }
+
+    public double getDefuzzi(double a, double b, double c, double d){
+        if(a == 0 && b == 0){
+            return 0;
+        }
+        else {
+            if (a > b) {
+                if (a < c) {
+                    return a;
+                } else {
+                    return c;
+                }
+            } else {
+                if (b <= d) {
+                    return b;
+                } else {
+                    return d;
+                }
+            }
+        }
+    }
+
+        /*
 
         Aposta res = new Aposta(Aposta.RES, 0.0);
         Aposta suau = new Aposta(Aposta.SUAU, 0.0);
@@ -230,7 +318,7 @@ public class FuzzyBidder implements BidMethod {
 
         /**
          * Miro els màxims que s'han disparat totes les sortides.
-         */
+         *
         for(Regla r : reglesDisparades){
             if(r.aposta.name.equals(Aposta.RES)){
                 if(res.value < r.aposta.value){
@@ -252,7 +340,7 @@ public class FuzzyBidder implements BidMethod {
                     fort = r.aposta;
                 }
             }
-        }
+        }*/
         /**
          * - Obtenir el conjunt difús segons :
          *
@@ -263,7 +351,7 @@ public class FuzzyBidder implements BidMethod {
          *
          */
 
-        // TODO : S'ha de fer bé, no està bé. S'ha de passar a % d'activació en funció de la funció.
+        /*// TODO : S'ha de fer bé, no està bé. S'ha de passar a % d'activació en funció de la funció.
         List<Double> conjunt = new ArrayList<>();
         if(res.value <= suau.value){
             conjunt.add(suau.value); // El valor per el punt 1
@@ -304,15 +392,9 @@ public class FuzzyBidder implements BidMethod {
         /**
          * - Desfuzifiquem mitjançant el mètode del centre de gravetat.
          */
-        int i = 0;
-        double num = 0;
-        double den = 0;
-        for(Double d : conjunt){
-            num += d * i;
-            den += d;
-        }
-        return den == 0 ? 0.0 :num / den;
-    }
+
+
+
 
     /**
      * Fuzzifiquem les càrregues d'aigua.
